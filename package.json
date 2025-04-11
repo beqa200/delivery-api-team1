@@ -15,5 +15,15 @@
     "url": "https://github.com/beqa200/delivery-api-team1/issues"
   },
   "homepage": "https://github.com/beqa200/delivery-api-team1#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemailer": "^6.10.0",
+    "prisma": "^6.5.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
 }
