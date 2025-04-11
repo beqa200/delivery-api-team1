@@ -1,0 +1,19 @@
+{
+  "name": "delivery-api-team1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beqa200/delivery-api-team1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beqa200/delivery-api-team1/issues"
+  },
+  "homepage": "https://github.com/beqa200/delivery-api-team1#readme",
+  "description": ""
+}
