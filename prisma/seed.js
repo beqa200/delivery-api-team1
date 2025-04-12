@@ -51,6 +51,7 @@ async function main() {
         order_price: 100,
         delivery_price: 5,
         sum: 105,
+        courier_id: 2,
       },
       {
         city: "gori",
@@ -61,6 +62,7 @@ async function main() {
         order_price: 32,
         delivery_price: 12,
         sum: 44,
+        courier_id: 2,
       },
       {
         city: "batumi",
@@ -71,6 +73,7 @@ async function main() {
         order_price: 300,
         delivery_price: 50,
         sum: 350,
+        courier_id: 3,
       },
     ],
   });
