@@ -19,3 +19,18 @@ model orders {
   sum            Decimal?  @db.Decimal
   created_at     DateTime? @default(now()) @db.Timestamp(6)
 }
+
+model users {
+  id       Int     @id @unique @default(autoincrement())
+  name     String? @db.VarChar(255)
+  email    String  @unique @db.VarChar(255)
+  password String  @db.VarChar(255)
+  roleId   Int     @default(autoincrement())
+  roles    roles   @relation(fields: [roleId], references: [id])
+}
+
+model roles {
+  id    Int     @id @unique @default(autoincrement())
+  name  String  @db.VarChar(255)
+  users users[]
+}
