@@ -12,3 +12,20 @@ export const getOrders = async (req, res) => {
     res.status(500).json({ error: "Error fetching orders" });
   }
 };
+
+export const createOrder = async (req, res) => {
+  const { order_price, delivery_price } = req.body;
+  try {
+    const order = await prisma.orders.create({
+      data: {
+        ...req.body,
+        sum: order_price + delivery_price,
+      },
+    });
+    res
+      .status(201)
+      .json({ message: "Order created successfully", data: order });
+  } catch (error) {
+    res.status(500).json({ error: "Error creating order" });
+  }
+};
