@@ -4,7 +4,14 @@ const prisma = new PrismaClient();
 
 export const getOrders = async (req, res) => {
   try {
-    const orders = await prisma.orders.findMany({});
+    const orders =
+      req.user.id === 1
+        ? await prisma.orders.findMany()
+        : await prisma.orders.findMany({
+            where: {
+              courier_id: req.user.id,
+            },
+          });
     res
       .status(200)
       .json({ message: "Orders fetched successfully", data: orders });
