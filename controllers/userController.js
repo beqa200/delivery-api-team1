@@ -17,6 +17,23 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ error: "Error fetching users" });
   }
 };
+export const createUser = async (req, res) => {
+  const { name, email, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    const user = await prisma.users.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        roleId: 2,
+      },
+    });
+    res.status(201).json({ message: "User created successfully", data: user });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 export const signIn = async (req, res) => {
   const { email, password } = req.body;
