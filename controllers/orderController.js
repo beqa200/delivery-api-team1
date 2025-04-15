@@ -4,14 +4,22 @@ const prisma = new PrismaClient();
 
 export const getOrders = async (req, res) => {
   try {
-    const orders =
-      req.user.id === 1
-        ? await prisma.orders.findMany()
-        : await prisma.orders.findMany({
-            where: {
-              courier_id: req.user.id,
-            },
-          });
+    let orders;
+    if (req.user.role == "admin") {
+      orders = await prisma.orders.findMany();
+    } else if (req.user.role == "courier") {
+      orders = await prisma.orders.findMany({
+        where: {
+          courier_id: req.user.id,
+        },
+      });
+    } else if (req.user.role == "store") {
+      orders = await prisma.orders.findMany({
+        where: {
+          status_id: 3,
+        },
+      });
+    }
     res
       .status(200)
       .json({ message: "Orders fetched successfully", data: orders });
