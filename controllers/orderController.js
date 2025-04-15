@@ -56,6 +56,26 @@ export const updateOrderStatus = async (req, res) => {
     res.status(500).json({ error: "Error updating order" });
   }
 };
+export const changeCourier = async (req, res) => {
+  const { id } = req.params;
+  const { courier_id } = req.body;
+
+  try {
+    const order = await prisma.orders.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        courier_id,
+      },
+    });
+    res
+      .status(200)
+      .json({ message: "Courier changed successfully", data: order });
+  } catch (error) {
+    res.status(500).json({ error: "Error changing courier" });
+  }
+};
 export const createOrder = async (req, res) => {
   const { order_price, delivery_price } = req.body;
   try {
