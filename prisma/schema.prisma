@@ -20,6 +20,8 @@ model orders {
   created_at     DateTime? @default(now()) @db.Timestamp(6)
   courier_id     Int?
   courier        users?    @relation(fields: [courier_id], references: [id])
+  status_id      Int?
+  status         statuses? @relation(fields: [status_id], references: [id])
 }
 
 model users {
@@ -36,4 +38,10 @@ model roles {
   id    Int     @id @unique @default(autoincrement())
   name  String  @db.VarChar(255)
   users users[]
+}
+
+model statuses {
+  id     Int      @id @unique @default(autoincrement())
+  name   String   @db.VarChar(255)
+  orders orders[]
 }
