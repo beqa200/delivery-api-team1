@@ -27,6 +27,7 @@ export const createOrder = async (req, res) => {
       data: {
         ...req.body,
         sum: order_price + delivery_price,
+        status_id: 4,
       },
     });
     res
