@@ -27,14 +27,27 @@ export const getOrders = async (req, res) => {
     res.status(500).json({ error: "Error fetching orders" });
   }
 };
-export const updateOrder = async (req, res) => {
+export const updateOrderStatus = async (req, res) => {
   const { id } = req.params;
+  const { status } = req.body;
+  const statusRecord = await prisma.statuses.findUnique({
+    where: {
+      name: status,
+    },
+  });
+
+  if (!statusRecord) {
+    return res.status(404).json({ error: "Status not found" });
+  }
+
   try {
     const order = await prisma.orders.update({
       where: {
         id: parseInt(id),
       },
-      data: req.body,
+      data: {
+        status_id: statusRecord.id,
+      },
     });
     res
       .status(200)
