@@ -93,6 +93,23 @@ export const createOrder = async (req, res) => {
     res.status(500).json({ error: "Error creating order" });
   }
 };
+export const updateOrder = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const order = await prisma.orders.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: req.body,
+    });
+    res
+      .status(200)
+      .json({ message: "Order updated successfully", data: order });
+  } catch (error) {
+    res.status(500).json({ error: "Error updating order" });
+  }
+};
+
 export const deleteOrder = async (req, res) => {
   const { id } = req.params;
   try {
