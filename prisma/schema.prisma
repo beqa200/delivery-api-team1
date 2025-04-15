@@ -42,6 +42,6 @@ model roles {
 
 model statuses {
   id     Int      @id @unique @default(autoincrement())
-  name   String   @db.VarChar(255)
+  name   String   @unique @db.VarChar(255)
   orders orders[]
 }
