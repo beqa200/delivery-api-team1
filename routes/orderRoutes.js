@@ -3,6 +3,7 @@ import {
   changeCourier,
   createOrder,
   deleteOrder,
+  getOrderById,
   getOrders,
   updateOrder,
   updateOrderStatus,
@@ -15,6 +16,7 @@ router.route("/:id/status").put(auth, isAdminOrCourier, updateOrderStatus);
 router.route("/:id/courier").put(auth, isAdmin, changeCourier);
 router
   .route("/:id")
+  .get(auth, isAdminOrCourier, getOrderById)
   .put(auth, isAdmin, updateOrder)
   .delete(auth, isAdmin, deleteOrder);
 export default router;
