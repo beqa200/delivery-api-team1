@@ -25,3 +25,12 @@ export const isAdmin = (req, res, next) => {
   }
   next();
 };
+
+export const isAdminOrCourier = (req, res, next) => {
+  if (req.user.role !== "admin" && req.user.role !== "courier") {
+    return res
+      .status(403)
+      .json({ message: "only admin or courier can access this route" });
+  }
+  next();
+};
