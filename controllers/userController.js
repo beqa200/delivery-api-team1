@@ -54,6 +54,19 @@ export const updateUser = async (req, res) => {
     res.status(500).json({ error: "Error updating user" });
   }
 };
+export const deleteUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await prisma.users.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error deleting user" });
+  }
+};
 
 export const signIn = async (req, res) => {
   const { email, password } = req.body;
