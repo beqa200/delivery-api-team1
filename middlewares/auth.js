@@ -34,3 +34,12 @@ export const isAdminOrCourier = (req, res, next) => {
   }
   next();
 };
+
+export const isAdminOrStore = (req, res, next) => {
+  if (req.user.role !== "admin" && req.user.role !== "store") {
+    return res
+      .status(403)
+      .json({ message: "only admin or store can access this route" });
+  }
+  next();
+};
