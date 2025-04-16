@@ -23,5 +23,5 @@ router
   .route("/:id")
   .get(auth, isAdminOrCourier, getOrderById)
   .put(auth, isAdminOrStore, updateOrder)
-  .delete(auth, isAdmin, deleteOrder);
+  .delete(auth, isAdminOrStore, deleteOrder);
 export default router;
