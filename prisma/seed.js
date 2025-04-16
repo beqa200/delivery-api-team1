@@ -14,9 +14,32 @@ async function main() {
         id: 2,
         name: "courier",
       },
+      {
+        id: 3,
+        name: "store",
+      },
     ],
   });
-
+  const statuses = await prisma.statuses.createMany({
+    data: [
+      {
+        id: 1,
+        name: "Delivered",
+      },
+      {
+        id: 2,
+        name: "Denied once",
+      },
+      {
+        id: 3,
+        name: "Denied twice",
+      },
+      {
+        id: 4,
+        name: "To deliver",
+      },
+    ],
+  });
   const users = await prisma.users.createMany({
     data: [
       {
@@ -52,6 +75,7 @@ async function main() {
         delivery_price: 5,
         sum: 105,
         courier_id: 2,
+        status_id: 1,
       },
       {
         city: "gori",
@@ -63,6 +87,7 @@ async function main() {
         delivery_price: 12,
         sum: 44,
         courier_id: 2,
+        status_id: 2,
       },
       {
         city: "batumi",
@@ -74,6 +99,19 @@ async function main() {
         delivery_price: 50,
         sum: 350,
         courier_id: 3,
+        status_id: 3,
+      },
+      {
+        city: "batumi",
+        customer: "luka",
+        mobile: "+995 555 123456",
+        address: "batumi Main St",
+        comment: "Leave at the door",
+        order_price: 300,
+        delivery_price: 50,
+        sum: 350,
+        courier_id: 3,
+        status_id: 4,
       },
     ],
   });
