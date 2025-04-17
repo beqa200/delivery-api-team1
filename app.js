@@ -4,6 +4,7 @@ import userRoutes from "./routes/userRoutes.js";
 const app = express();
 
 app.use(express.json());
+app.use("/uploads", express.static("./uploads"));
 app.get("/", (req, res) => {
   res.json({ message: "welcome to postgress" });
 });
