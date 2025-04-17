@@ -1,4 +1,7 @@
 import { PrismaClient } from "@prisma/client";
+import xlsx from "xlsx";
+import fs from "fs";
+import path from "path";
 
 const prisma = new PrismaClient();
 
@@ -142,4 +145,41 @@ export const deleteOrder = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Error deleting order" });
   }
+};
+
+export const uploadOrderExcel = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: "No file uploaded" });
+  }
+  const workbook = xlsx.readFile(req.file.path);
+  const sheetName = workbook.SheetNames[0];
+  const sheet = workbook.Sheets[sheetName];
+  const data = xlsx.utils.sheet_to_json(sheet);
+  const orders = data.map((item) => ({
+    city: item.city,
+    customer: item.customer,
+    mobile: item.mobile,
+    address: item.address,
+    comment: item.comment,
+    order_price: item.order_price,
+    delivery_price: item.delivery_price,
+    sum: parseInt(item.order_price) + parseInt(item.delivery_price),
+    courier_id: item.courier_id,
+    status_id: item.status_id,
+  }));
+  const createdOrders = await prisma.orders.createMany({
+    data: orders,
+  });
+  res.status(201).json({
+    message: "Orders uploaded successfully",
+    data: createdOrders,
+  });
+  const filePath = path.join(__dirname, "..", "uploads", req.file.filename);
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.error("Error deleting file:", err);
+    } else {
+      console.log("File deleted successfully");
+    }
+  });
 };
