@@ -19,19 +19,22 @@ model orders {
   sum            Decimal?  @db.Decimal
   created_at     DateTime? @default(now()) @db.Timestamp(6)
   courier_id     Int?
-  courier        users?    @relation(fields: [courier_id], references: [id])
+  courier        users?    @relation("CourierRelation", fields: [courier_id], references: [id])
   status_id      Int?
   status         statuses? @relation(fields: [status_id], references: [id])
+  store_id       Int?
+  store          users?    @relation("StoreRelation", fields: [store_id], references: [id])
 }
 
 model users {
-  id       Int      @id @unique @default(autoincrement())
-  name     String?  @db.VarChar(255)
-  email    String   @unique @db.VarChar(255)
-  password String   @db.VarChar(255)
-  roleId   Int      @default(autoincrement())
-  roles    roles    @relation(fields: [roleId], references: [id])
-  orders   orders[]
+  id             Int      @id @unique @default(autoincrement())
+  name           String?  @db.VarChar(255)
+  email          String   @unique @db.VarChar(255)
+  password       String   @db.VarChar(255)
+  roleId         Int      @default(autoincrement())
+  roles          roles    @relation(fields: [roleId], references: [id])
+  courier_orders orders[] @relation("CourierRelation")
+  store_orders   orders[] @relation("StoreRelation")
 }
 
 model roles {
