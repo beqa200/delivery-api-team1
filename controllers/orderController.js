@@ -6,30 +6,83 @@ import path from "path";
 const prisma = new PrismaClient();
 
 export const getOrders = async (req, res) => {
+  const { city, status_id, courier_id, start_date, end_date, store } =
+    req.query;
+
   try {
-    let orders;
-    if (req.user.role == "admin") {
-      orders = await prisma.orders.findMany();
-    } else if (req.user.role == "courier") {
-      orders = await prisma.orders.findMany({
-        where: {
-          courier_id: req.user.id,
-        },
-      });
-    } else if (req.user.role == "store") {
-      orders = await prisma.orders.findMany({
-        where: {
-          status_id: 3,
-        },
-      });
+    const filters = {};
+
+    if (city) filters.city = city;
+    if (status_id) filters.status_id = parseInt(status_id);
+    if (courier_id) filters.courier_id = parseInt(courier_id);
+    if (store) filters.courier_id = parseInt(store);
+    if (start_date || end_date) {
+      filters.created_at = {};
+      if (start_date) filters.created_at.gte = new Date(start_date);
+      if (end_date) filters.created_at.lte = new Date(end_date);
     }
-    res
-      .status(200)
-      .json({ message: "Orders fetched successfully", data: orders });
+    if (Object.keys(filters).length > 0) {
+      let orders;
+      if (req.user.role == "admin") {
+        orders = await prisma.orders.findMany({
+          where: filters,
+          include: {
+            courier: true,
+            status: true,
+          },
+        });
+      } else if (req.user.role == "courier") {
+        orders = await prisma.orders.findMany({
+          where: {
+            ...filters,
+            courier_id: req.user.id,
+          },
+          include: {
+            courier: true,
+            status: true,
+          },
+        });
+      } else if (req.user.role == "store") {
+        orders = await prisma.orders.findMany({
+          where: {
+            ...filters,
+            store_id: req.user.id,
+          },
+          include: {
+            courier: true,
+            status: true,
+          },
+        });
+      }
+      res
+        .status(200)
+        .json({ message: "orders fetched successfully", data: orders });
+    } else {
+      let orders;
+      if (req.user.role == "admin") {
+        orders = await prisma.orders.findMany();
+      } else if (req.user.role == "courier") {
+        orders = await prisma.orders.findMany({
+          where: {
+            courier_id: req.user.id,
+          },
+        });
+      } else if (req.user.role == "store") {
+        orders = await prisma.orders.findMany({
+          where: {
+            status_id: 3,
+          },
+        });
+      }
+      res
+        .status(200)
+        .json({ message: "orders fetched successfully", data: orders });
+    }
   } catch (error) {
-    res.status(500).json({ error: "Error fetching orders" });
+    res.status(500).json({ error: error.message });
   }
 };
+
 export const getOrderById = async (req, res) => {
   const { id } = req.params;
   try {
