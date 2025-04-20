@@ -6,7 +6,7 @@ import path from "path";
 const prisma = new PrismaClient();
 
 export const getOrders = async (req, res) => {
-  const { city, status_id, courier_id, start_date, end_date, store } =
+  const { city, status_id, courier_id, start_date, end_date, store_id } =
     req.query;
 
   try {
@@ -15,7 +15,7 @@ export const getOrders = async (req, res) => {
     if (city) filters.city = city;
     if (status_id) filters.status_id = parseInt(status_id);
     if (courier_id) filters.courier_id = parseInt(courier_id);
-    if (store) filters.courier_id = parseInt(store);
+    if (store) filters.store_id = parseInt(store_id);
     if (start_date || end_date) {
       filters.created_at = {};
       if (start_date) filters.created_at.gte = new Date(start_date);
@@ -218,6 +218,7 @@ export const uploadOrderExcel = async (req, res) => {
     delivery_price: item.delivery_price,
     sum: parseInt(item.order_price) + parseInt(item.delivery_price),
     courier_id: item.courier_id,
+    store_id: item.store_id,
     status_id: item.status_id,
   }));
   const createdOrders = await prisma.orders.createMany({
