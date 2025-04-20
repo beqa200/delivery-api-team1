@@ -9,13 +9,46 @@
  * @swagger
  * /orders:
  *   get:
- *     summary: Get all orders
+ *     summary: Get all orders with optional filters
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: city
+ *         schema:
+ *           type: string
+ *         description: Filter by city
+ *       - in: query
+ *         name: status_id
+ *         schema:
+ *           type: integer
+ *         description: Filter by status ID
+ *       - in: query
+ *         name: courier_id
+ *         schema:
+ *           type: integer
+ *         description: Filter by courier ID
+ *       - in: query
+ *         name: store_id
+ *         schema:
+ *           type: integer
+ *         description: Filter by store ID
+ *       - in: query
+ *         name: start_date
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Filter by orders created after this date
+ *       - in: query
+ *         name: end_date
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Filter by orders created before this date
  *     responses:
  *       200:
- *         description: List of all orders
+ *         description: List of filtered orders
  *         content:
  *           application/json:
  *             schema:
@@ -281,6 +314,10 @@
  *           type: integer
  *           description: ID of the courier assigned to the order.
  *           example: 5
+ *         store_id:
+ *           type: integer
+ *           description: ID of the store that created the order.
+ *           example: 3
  *         status_id:
  *           type: integer
  *           description: ID of the status of the order.
