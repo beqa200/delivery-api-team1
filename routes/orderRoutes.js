@@ -18,7 +18,7 @@ import {
 import upload from "../middlewares/uploadFIle.js";
 
 const router = express.Router();
-router.route("/").get(auth, getOrders).post(auth, createOrder);
+router.route("/").get(auth, getOrders).post(auth, isAdminOrStore, createOrder);
 router.route("/:id/status").put(auth, isAdminOrCourier, updateOrderStatus);
 router.route("/:id/courier").put(auth, isAdmin, changeCourier);
 router

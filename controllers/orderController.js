@@ -15,7 +15,7 @@ export const getOrders = async (req, res) => {
     if (city) filters.city = city;
     if (status_id) filters.status_id = parseInt(status_id);
     if (courier_id) filters.courier_id = parseInt(courier_id);
-    if (store) filters.store_id = parseInt(store_id);
+    if (store_id) filters.store_id = parseInt(store_id);
     if (start_date || end_date) {
       filters.created_at = {};
       if (start_date) filters.created_at.gte = new Date(start_date);
@@ -158,6 +158,7 @@ export const createOrder = async (req, res) => {
         ...req.body,
         sum: order_price + delivery_price,
         status_id: 4,
+        store_id: req.user.role == "store" ? req.user.id : null,
       },
     });
     res
